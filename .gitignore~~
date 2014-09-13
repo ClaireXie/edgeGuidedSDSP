@@ -5,11 +5,11 @@ iccv13/
 middlebury/
 outputs/
 paperFigures/
-posterFigures/
+posterFigure/
 RegularizedSC/
 result/
 sketchTokens/
 olderVersion/
-numericalEvalution.m
 runQuantative.m
-testDictionary.m 
+testDictionary.m
+numericalEvalution.m

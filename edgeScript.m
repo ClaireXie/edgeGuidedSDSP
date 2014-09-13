@@ -4,6 +4,7 @@
 clc; clear; close all;
 
 disp('========================')
+fprintf('collection high-res and low-res edge pairs...\n');
 
 scaling = 4;
 psize = 21; 
