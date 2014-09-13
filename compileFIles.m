@@ -1,0 +1,5 @@
+cd 'mexFunctions';
+
+compileMex;
+
+cd .. 

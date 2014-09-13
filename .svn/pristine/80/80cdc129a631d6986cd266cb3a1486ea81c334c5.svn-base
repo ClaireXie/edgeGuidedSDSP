@@ -1,0 +1,121 @@
+clc;clear;close all
+addpath('../funcs/');
+addpath('../')
+
+
+figNum=6;
+
+% constructing fig 1
+if figNum==1
+    border1=10;
+    border=12;
+    load ('middlebury/teddy/s4/eccv_teddy.mat');
+    cleanImg=double(imread('inputs/teddy_clean.png'));
+    eccv=depthToDisp(superRes, cleanImg, 4);
+    cvpr13=imread('middlebury/teddy/s4/hornacek_teddy.png');
+    scsr=imread('middlebury/teddy/s4/scsr_teddy.png');
+    ours=imread('outputs/v2/teddy2_4.png');
+
+    eccv=eccv(border:end-border,border:end-border);
+    cvpr13=cvpr13(border:end-border,border:end-border);
+    scsr=scsr(border:end-border,border:end-border);
+    ours=ours(border1:end-border1,border1:end-border1);
+
+    figure;
+    subplot(2,2,1);imshow(uint8(eccv));
+    subplot(2,2,2);imshow(uint8(scsr));
+    subplot(2,2,3);imshow(uint8(cvpr13));
+    subplot(2,2,4);imshow(uint8(ours));
+
+    imwrite(uint8(eccv),'eccv_teddy.png');
+    imwrite(uint8(cvpr13),'cvpr13_teddy.png');
+    imwrite(uint8(scsr),'scsr_teddy.png');
+    imwrite(uint8(ours),'ours_teddy.png');
+end
+
+
+% constructing fig 2 and 3
+if figNum==2
+    load 'supportExample4'
+    test(:,:,1)=supportE;
+    test(:,:,2)=t;
+    test(:,:,3)=t;
+    figure;imshow(uint8(test*255));
+end
+
+% constructing fig 4
+if figNum==4
+    gtEdge=imread('gtEdge.png');
+    orgEdge=imread('orgEdge.png');
+    shockEdge=imread('shockEdge.png');
+    ourEdge=imread('ourEdge2.png');
+    
+    figure;
+    subplot(2,2,1);imshow(gtEdge(120:180,300:360));
+    subplot(2,2,2);imshow(orgEdge(120:180,300:360));
+    subplot(2,2,3);imshow(shockEdge(120:180,300:360));
+    subplot(2,2,4);imshow(ourEdge(120:180,300:360));
+    
+    imwrite(gtEdge(120:180,300:360),'gtEdgeCrop.png');
+    imwrite(orgEdge(120:180,300:360),'orgEdgeCrop.png');
+    imwrite(shockEdge(120:180,300:360),'shockEdgeCrop.png');
+    imwrite(ourEdge(120:180,300:360),'ourEdgeCrop.png');
+end
+
+% constructing fig 5
+if figNum==5
+    cvpr13=imread('cvpr13_cones.png');
+    eccv=imread('eccv_cones.png');
+    scsr=imread('scsr_cones.png');
+    ours=imread('cones2_4_visual.png');
+    gt=imread('../inputs/cones_clean.png');
+    edges=imread('cones2_edge_4_visual.png');
+    
+    %crop
+    sz = size(gt);
+    sz = sz - mod(sz, 4);
+    gt = gt(1:sz(1), 1:sz(2));
+    
+    % nearest neighbor
+    low=imresize(gt,1/4,'nearest');
+    low=imresize(low,4,'nearest');
+    
+    %figure;imshow(ours);axis on;
+    figure;
+    subplot(2,3,1);imshow(edges(30:300,195:end-10,:));
+    subplot(2,3,2);imshow(eccv(30:300,193:end-12));
+    subplot(2,3,3);imshow(scsr(30:300,193:end-12));
+    subplot(2,3,4);imshow(cvpr13(30:300,193:end-12));
+    subplot(2,3,5);imshow(ours(30:300,195:end-10,:));
+    subplot(2,3,6);imshow(gt(30:300,197:end-8));
+    
+    imwrite(edges(30:300,195:end-10,:),'edgeConesCrop.png');
+    imwrite(gt(30:300,197:end-8),'gtConesCrop.png');
+    imwrite(eccv(30:300,193:end-12),'eccvConesCrop.png');
+    imwrite(scsr(30:300,193:end-12),'scsrConesCrop.png');
+    imwrite(cvpr13(30:300,193:end-12),'cvpr13ConesCrop.png');
+    imwrite(ours(30:300,195:end-10,:),'oursConesCrop.png');
+end
+
+% constructing fig 6
+if figNum==6
+    cvpr13=imread('cvpr13_bird.png');
+    eccv=imread('eccv_bird.png');
+    scsr=imread('scsr_bird.png');
+    ours=imread('ours_bird.png');
+    
+    %figure;imshow(cvpr13);axis on;
+    figure;
+    subplot(1,4,1);imshow(cvpr13(280:460, 60:170));
+    subplot(1,4,2);imshow(eccv(280:460, 60:170));
+    subplot(1,4,3);imshow(scsr(280:460, 60:170));
+    subplot(1,4,4);imshow(ours(280:460, 60:170));
+    
+    imwrite(cvpr13(280:460, 60:170),'cvpr11Crop.png');
+    imwrite(eccv(280:460, 60:170),'eccv11Crop.png');
+    imwrite(scsr(280:460, 60:170),'scsr11Crop.png');
+    imwrite(ours(280:460, 60:170),'ours11Crop.png');
+    
+    end
+
+

@@ -1,0 +1,110 @@
+%clc; close all; clear;
+function output=blup_lowPath(scale, input, edge0)
+
+
+depthLow=input;
+
+%---------------------------------------%
+depthMedium=imresize(depthLow, scale, 'bicubic');
+%edgesh = edge(double(depthMedium),'canny');
+%edgesh = edge(double(depthOrg),'canny');
+%edgesh=imresize(edge0, scale, 'bicubic');
+edgesh=edge0;
+%---------------------------------------%
+
+%either declaire as global or assign value individually
+global window sigma_d;
+%window=5;
+%sigma_d=0.5;
+window_half=floor(window/2);
+offset=1; % very important
+depthHigh=zeros(size(depthMedium));
+
+%generate rastered line template
+template0=computeDistTemp(scale*2*window_half+1);
+[structA, structC0]=constructGraphEdge(scale*2*window_half+1);
+[row, col]=find(structA==1);
+structA=structA+transpose(structA);
+
+%processing the edges
+NHOOD=[0 1 0; 1 1 1; 0 1 0];
+se = strel('arbitrary', NHOOD);
+edgeMap = edge0+imdilate(edge0, se)+1;
+
+
+%parfor idx=1:size(edgesh,1)*size(edgesh,2)
+for i=scale*window_half+1 : size(edgesh,1)-scale*window_half-offset
+    for j=scale*window_half+1 : size(edgesh,2)-scale*window_half-offset
+%for i=scale*window_half+1 : 200
+%    for j=scale*window_half+1 : 200
+        %i=ceil(idx/size(edgesh,2));
+        %j=mod(idx-1, size(edgesh,2))+1;
+        
+        idx=(i-1)*size(edgesh,1)+j;
+        
+        %{
+        if (i<scale*window_half+1 || i>size(edgesh,1)-scale*window_half-offset ||...
+                j<scale*window_half+1 || j>size(edgesh,2)-scale*window_half-offset)
+            continue;
+        end
+        %}
+        
+        s=0;normalize=0;
+        
+        edgeTmp=edgeMap(i-scale*window_half:i+scale*window_half, ...
+            j-scale*window_half:j+scale*window_half);        
+        centerLoc=edgeMap(idx);
+        
+        if (centerLoc==2)
+            structC=constructGraphWeight(row, col, edgeTmp, scale*2*window_half+1, structC0);
+        end
+               
+        for ii=i-scale*window_half:i+scale*window_half
+            for jj=j-scale*window_half: j+scale*window_half
+                
+                supportE=edgesh(i-scale*window_half:i+scale*window_half,...
+                    j-scale*window_half:j+scale*window_half);
+                
+                x=ii-(i-scale*window_half)+1;
+                y=jj-(j-scale*window_half)+1;
+                
+                if (mod(ii+offset,scale)==0 && mod(jj+offset,scale)==0)
+                    index=y+(x-1)*(scale*2*window_half+1); 
+                       
+                    % if this patch contain edges
+                    % only close to the edge pixels
+                    %----------------------------------------%
+                    if (centerLoc==2 && edgeTmp(index)==2)
+                        template=findPath(structA, structC, index, scale*2*window_half+1);
+                    else
+                        template=template0(:,:,index);
+                    end
+                    %----------------------------------------%
+                    
+                    %ind = find(template(:,:,index)~=0);
+                    ind = find(template~=0);
+                    
+                    if sum(supportE(ind))==0 || (edgesh(i,j)==1 && sum(supportE(ind))==1)
+                         d=sqrt((i/scale-ii/scale)^2+(j/scale-jj/scale)^2);
+                         g=normpdf(d, 0, sigma_d);
+                         s=s+depthLow((ii+offset)/scale,(jj+offset)/scale)*g;
+                         normalize=normalize+g;
+                    end       
+                end
+            end
+        end
+        
+        if (normalize~=0)
+            depthHigh(i,j)=s/normalize;
+            %depthHigh(idx)=s/normalize;
+        else
+            depthHigh(i,j)=depthMedium(i,j);
+            %depthHigh(idx)=depthMedium(i,j);
+        end
+    end
+end
+
+output=depthHigh;
+%figure;imshow(uint8(depthHigh));
+%figure;imshow(uint8(depthHigh+edgesh*255));
+

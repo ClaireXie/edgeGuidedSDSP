@@ -1,0 +1,28 @@
+clc; clear;
+
+[structA, structC0]=constructGraphEdge(17);
+[row, col]=find(structA==1);
+structA=structA+transpose(structA);
+load('E:\edgeGuided\paperFigures\supportExample2.mat');
+supportE(9,9)=0;
+
+NHOOD=[0 1 0; 1 1 1; 0 1 0];
+se = strel('arbitrary', NHOOD);
+edgeMap = supportE+imdilate(supportE, se)+1;
+structC=constructGraphWeight(row, col, edgeMap,17, structC0);
+template1=findPath(structA, structC, 33, 17);
+ 
+result1(:,:,1)=supportE;
+result1(:,:,2)=template1;
+result1(:,:,3)=zeros(size(template1));
+
+figure;imshow(uint8(result1*255));axis on;
+
+structC1=constructGraphWeight(row, col, ones(size(edgeMap)),17, structC0);
+template2=findPath(structA, structC1, 33, 17);
+
+result2(:,:,1)=supportE;
+result2(:,:,2)=template2;
+result2(:,:,3)=zeros(size(template2));
+
+figure;imshow(uint8(result2*255));axis on;
