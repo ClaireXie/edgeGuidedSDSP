@@ -1,13 +1,20 @@
-function output = blup_lowPath(scale, input, edge0)
 
+function output = blup_lowPath(scale, input, edge0)
+% Original function for bilateral upsampling (without acceleration)
+% Note: very slowly!
+%   Input: 
+%        edges: input low-res edge
+%        input: low-res image
+%        scale: upsampling scales
+%   Output:     
+%        output: high-res reconstructed depth image
+% 
+% (c)2014 Jun Xie
 
 depthLow = input;
 
 %---------------------------------------%
 depthMedium = imresize(depthLow, scale, 'bicubic');
-%edgesh = edge(double(depthMedium),'canny');
-%edgesh = edge(double(depthOrg),'canny');
-%edgesh=imresize(edge0, scale, 'bicubic');
 edgesh = edge0;
 %---------------------------------------%
 
@@ -49,11 +56,6 @@ for idx = 1:size(edgesh,1)*size(edgesh,2)
                 j<scale*window_half+1 || j>size(edgesh,2)-scale*window_half-offset)
             continue;
         end
-         
-        %{
-        % be careful about the order
-        idx=(j-1)*size(edgesh,1)+i;
-        %}
         
         % accumulated vars
         s = 0; 

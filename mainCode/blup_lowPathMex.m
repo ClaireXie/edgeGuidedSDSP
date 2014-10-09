@@ -1,5 +1,15 @@
-% test the mex functions
+
 function highRes = blup_lowPathMex(edges, input, scale, offset)
+% Mexed function for bilateral upsampling
+%   Input: 
+%        edges: input low-res edge
+%        input: low-res image
+%        scale: upsampling scales
+%        offset: edge offset (fixed)
+%   Output:     
+%        highRes: high-res reconstructed depth image
+% 
+% (c)2014 Jun Xie
 
 addpath('mexFunctions/');
 global window sigma_d;
