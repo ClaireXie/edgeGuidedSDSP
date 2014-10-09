@@ -1,4 +1,0 @@
-clear; clc;
-% compile the mex files
-mex -largeArrayDims fibheap.cpp 
-mex -largeArrayDims createGraph.cpp
