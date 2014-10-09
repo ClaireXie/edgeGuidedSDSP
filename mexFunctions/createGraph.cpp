@@ -20,7 +20,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 	// labels
 
     if (nrhs != 7) {
-		mexErrMsgTxt("7 inputs required: \n index candidateHTrans patchSize m n structureSzie labels \n");
+		mexErrMsgTxt("7 inputs required: \n index candidateHTrans patchSize structureSize labels \n");
 	}
 
 	if (nlhs != 3) {
@@ -68,7 +68,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 
 			if (abs(x0-xx) < patchSize && abs(y0-yy) < patchSize) {
 				sr[nonzero] = 1;
-				ir[nonzero] = i;
+				ir[nonzero] = j; //j
 				nonzero++;
 			}
 		}
@@ -94,13 +94,11 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 	double *edgeEnds = (double *)mxGetData(plhs[2]);
 
 
-
-
     for (int i = 0 ; i < nonzero; i++) {
     	int tmpMap[m*n];
     	// initialization
-    	for (int i = 0; i < m*n; i++) {
-    		tmpMap[i] = 0;
+    	for (int ii = 0; ii < m*n; ii++) {
+    		tmpMap[ii] = 0;
     	}
 
 		int y1 = index[a[i]]-1;
@@ -116,7 +114,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     	}
 
     	// compute the bounding box
-    	int min_x = 1000, min_y = 1000, max_x = -1000, max_y = -1000;
+    	int min_x = 10000, min_y = 10000, max_x = -10000, max_y = -10000;
     	for (int j = min(y1, y2)-half; j <= max(y1, y2)+half; j++) {
     		for (int k = min(x1, x2)-half; k <= max(x1, x2)+half; k++) {
 
@@ -129,7 +127,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     		}
     	}
 
-		for (int k1 = 0; k1 < labels; k1++) {
+		
+        for (int k1 = 0; k1 < labels; k1++) {
 			for (int k2 = 0; k2 < labels; k2++) {
 
 				double sum = 0;
@@ -147,7 +146,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 				}
 
 				// matlab index
-				edgePots[i + (k1 + k2*labels)*nonzero] = sum; 
+				edgePots[i + (k2 + k1*labels)*nonzero] = sum; 
 				edgeEnds[i] = a[i]+1; 
 				edgeEnds[i+nonzero] = b[i]+1;
     		}
