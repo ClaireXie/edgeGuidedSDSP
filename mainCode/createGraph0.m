@@ -1,4 +1,4 @@
-function [ unary edgePots edgeEnds] = createGraph(candidateH, candidateHTrans, index, diff, structure, edgeMap, half)
+function [ unary edgePots edgeEnds] = createGraph0(candidateH, candidateHTrans, index, diff, structure, edgeMap, half)
 
 % define the unary term
 nNodes = size(index,1);
@@ -10,6 +10,8 @@ psize = sqrt(size(candidateH,3));
 [rows, cols, s] = find(structure);
 
 fprintf('construct the edge weights...\n');
+
+structure = [];
 
 for i = 1:size(cols,1)
     a = rows(i);

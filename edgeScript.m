@@ -1,11 +1,14 @@
+
 % script for extracting the training set of patches
-% training script (Extracting Edges from the training set)
+% (c)2014 Jun Xie
 
 clc; clear; close all;
 
 disp('========================')
 fprintf('collection high-res and low-res edge pairs...\n');
 
+% set the parameters below
+%--------------------------------%
 scaling = 4;
 psize = 21; 
 psize_half = (psize+1)/2;
