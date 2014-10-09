@@ -1,7 +1,27 @@
-function [candidateH, candidateHTrans, index, diff, output] = ...
-           genCandidate (edgeMap, edfeMapShock, highData, lowdataTrans, highdataTrans, scale, psize, localSize, w1)
 
-psize_high = psize;
+function [candidateH, candidateHTrans, index, diff] = ...
+           genCandidate (edgeMap, edfeMapShock, highData, lowdataTrans, ... 
+           highdataTrans, psize, localSize, w1)
+       
+% Function for generating candidate patches for dataset
+%   Input: 
+%        edgeMap: input low-res edge
+%        edfeMapShock: input low-res edge after shock filtering
+%        highData: high-res patches from dataset
+%        lowdataTrans: low-res patches (distance transformed) from dataset
+%        highdataTrans: high-res patches (distance transformed) from dataset
+%        psize: window size
+%        localSize: overlap size between patches
+%        w1: unary weight -- weights for the shock edge map
+%   Output:     
+%        candidateH: high-res candidate patches
+%        candidateHTrans: high-res candidate patches(distance transformed)
+%        index: lookup table for indexing the patch position
+%        diff: intensity difference between the candidate and the input
+% 
+% (c)2014 Jun Xie
+
+
 half = (psize+1)/2;
 numCandidates = 5;
 
@@ -9,7 +29,6 @@ edgeslTmp = edgeMap;
 index=[];
 num=1;
 
-output=edgeMap;
 % extract patches
 fprintf('extract patches from the input...\n');
 for i = half+1:size(edgeMap,1)-half
@@ -21,18 +40,7 @@ for i = half+1:size(edgeMap,1)-half
             patch = edgeMap(i-half+1:i+half-1, j-half+1:j+half-1);
             % shock patches
             patch0 = edfeMapShock(i-half+1:i+half-1, j-half+1:j+half-1);
-            
-            %{
-            [edgelist, labelededgeim] = edgelink(patch, 5);
-            
-            if (size(edgelist,2)>1)
-                k=labelededgeim(half,half);
-                [edgelist0, labelededgeim0] = edgelink(patch0, 5);
-                patch=(labelededgeim==k);
-                patch0=(labelededgeim0==k);
-            end
-            %}
-            
+                        
             % perform distance transform
             patchTrans = bwdist(patch);
             
@@ -61,8 +69,6 @@ for i = half+1:size(edgeMap,1)-half
     end
 end
 
-% for visualization purpose
-%figure;imshow(uint8(output*255));
 
 % search for candidates, do knn search
 fprintf('finding the knn...\n');
@@ -70,7 +76,7 @@ sdata = [lowdataTrans w1*highData];
 [idx, diff] = knnsearch(sdata, query, 'K', numCandidates);
 
 % contruct graph structure
-% TODO put this piece of code to mex function
+% older implementation, currently implemented in mex
 %{
 fprintf('contruct graph structure and collect candidate patches...\n');
 structure = zeros(size(index,1));

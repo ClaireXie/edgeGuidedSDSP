@@ -1,4 +1,17 @@
+
 function [labelling, energy1, energy2]=infer(weight, unary, edgePots0, edgeEnds)
+% Mexed function for MRF inference
+%   Input: 
+%        weight: weight for the pairwise potential
+%        unary: unary potential
+%        edgePots0: pairwise potential
+%        edgeEnds: edge index
+%   Output:     
+%        labelling: infered labels
+%        energy1: final minimized energy
+%        energy2: finnal energy only for the unary potential
+% 
+% (c)2014 Jun Xie
 
 % optimization setting
 maxIter = 100;
@@ -22,14 +35,6 @@ edgePots = permute(edgePots,[2, 3, 1]);
 edgePots = exp(-1*edgePots/100);
 nodePots = exp(-1*unary/100);
 
-%do we need normalization??
-%{
-for i=1:size(edgePots,3)
-    edgePots(:,:,i)=edgePots(:,:,i)./repmat(sum(edgePots(:,:,i),2),1,10);
-end
-nodePots=nodePots./repmat(sum(nodePots,2),1,10);
-%}
-
 fprintf('[Inference] Decoding using L-BP...\n');
 
 % decoding
@@ -38,6 +43,7 @@ LBPDecoding = UGM_Decode_LBP(nodePots,edgePots,edgeStruct);
 labelling = LBPDecoding;
 
 % output energy
+%for debugging only
 energy2 = 0;
 for i = 1:size(unary,1)
     energy2 = energy2+unary(i,labelling(i));
@@ -47,7 +53,6 @@ for i = 1:size(edgePots0,1)
     jj = edgeEnds(i, 2);
     energy2 = energy2+weight*edgePots0(i,labelling(ii), labelling(jj));
 end
-
 
 energy1 = 0;
 for i = 1:size(unary,1)
