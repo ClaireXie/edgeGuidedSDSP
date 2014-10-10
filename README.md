@@ -21,12 +21,12 @@ The code depends on UGM toolbox (http://www.cs.ubc.ca/~schmidtm/Software/UGM.htm
 
 3. Some example input depth images are included in inputs/
 
-4. If you want to do the training on your own, with the collected image data, run edgeScript.m
+4. If you want to do the training on your own, with the collected image data, use edgeScript.m
 
 
 Depth Super-resolution Results
 =======================
-PLease note that the result in this version of code is slightly lower than that was reported in the paper since we utilize some code optimization for efficiency concerns in this version. 
+Please note that the quantitative evaluation result in this version is slightly lower than that was reported in the paper since we utilize some code optimization for efficiency concerns in this version. 
 
-PLease feel free to contact junx@uw.edu for any questions or bug reports.
+Please feel free to contact junx@uw.edu for any questions or bug reports.
 
