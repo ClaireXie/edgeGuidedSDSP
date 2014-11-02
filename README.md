@@ -4,7 +4,7 @@ Edge Guided Single Depth Image Super-resolution
 
 This code implements the approach for super resolution with a single depth image input in the follwoing paper:
 
-http://staff.washington.edu/junx/publication/icip2014_edgeGuided.pdf
+http://public.genius-field.com/junx/publication/icip2014_edgeGuided.pdf
 
 If you intend to use the source code, please cite the paper as follows:
 J. Xie, R. Feris and M.T. Sun, "Edge Guided Single Depth Image Super Resolution," ICIP 2014
