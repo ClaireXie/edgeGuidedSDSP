@@ -5,9 +5,9 @@
 
 clc;clear;close all;
 
-if matlabpool('size') == 0
-    matlabpool open local 4
-end
+%if matlabpool('size') == 0
+%    matlabpool open local 4
+%end
 
 addpath('mainCode/');
 
@@ -36,7 +36,7 @@ para.w1 = w1;
 para.w2 = w2;
 para.localSize = localSize;
 para.scale = scale;
-
+para.print2File = 1;
 
 % run the code for each image
 for i = 1:numel(names)
@@ -60,7 +60,7 @@ for i = 1:numel(names)
     border = 2*window;
     if (i ~= 5)
         runEvaluation(inputFile, scale, highres{i}, edges{i}, scaleFact, ... 
-        border, threshold(i), 0, i);
+        border, threshold(i), para.print2File, i);
     end
     
     highRes = highres{i};

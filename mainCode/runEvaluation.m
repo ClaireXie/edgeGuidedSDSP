@@ -37,19 +37,19 @@ sz = sz - mod(sz, scale);
 gt = gt(1:sz(1), 1:sz(2));
 
 edgesGt = edge(gt,'canny',threshold);   %0.1
-gt=double(gt)/scaleFact;
-output=highres/scaleFact;
-output(1+offset:end,1+offset:end)=output(1:end-offset, 1:end-offset);
+gt = double(gt)/scaleFact;
+output = highres/scaleFact;
+output(1+offset:end,1+offset:end) = output(1:end-offset, 1:end-offset);
 
-para.l=max(max(gt))-min(min(gt));
+para.l = max(max(gt))-min(min(gt));
 
-rmseV=calc_rmse(output(border+1:end-border,border+1:end-border),...
+rmseV = calc_rmse(output(border+1:end-border,border+1:end-border),...
     gt(border+1:end-border,border+1:end-border));
 
-ssimV=ssim(output(border+1:end-border,border+1:end-border),...
+ssimV = ssim(output(border+1:end-border,border+1:end-border),...
     gt(border+1:end-border,border+1:end-border),para.K,para.win,para.l);
 
-edgeError=sum(sum(abs(edgesGt(border+1:end-border,border+1:end-border)-...
+edgeError = sum(sum(abs(edgesGt(border+1:end-border,border+1:end-border)-...
     edges(border+1:end-border,border+1:end-border))))...
     /((size(edgesGt,1)-2*border)*(size(edgesGt,2)-2*border));
 

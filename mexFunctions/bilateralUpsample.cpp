@@ -246,7 +246,7 @@ void pred2path(vector <int> P, int s, int t, vector<int> &path) {
 void dilatePath(vector <int> &path, int n) {
 	
 	// put path into an indexing map
-	bool map[n*n]; 
+	bool *map = new bool[n*n]; 
 	int m = path.size();
 
 	for (int i = 0; i<n*n; i++) {
@@ -283,6 +283,8 @@ void dilatePath(vector <int> &path, int n) {
 	    }
 
 	}
+
+	delete map;
 }
 
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {

@@ -95,7 +95,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 
 
     for (int i = 0 ; i < nonzero; i++) {
-    	int tmpMap[m*n];
+    	int *tmpMap = new int[m*n];
     	// initialization
     	for (int ii = 0; ii < m*n; ii++) {
     		tmpMap[ii] = 0;
@@ -126,6 +126,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     			}
     		}
     	}
+
+        delete tmpMap;
 
 		
         for (int k1 = 0; k1 < labels; k1++) {
