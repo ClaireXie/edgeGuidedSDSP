@@ -56,7 +56,7 @@ input = double(input);
 
 % nn interpolation
 low = imresize(input,scale,'nearest');
-edgesl = edge(low,'canny',threshold);
+edgesl = edge_2010(low,'canny',threshold);
 
 % shock filter parameters
 para.dt = 0.1;
@@ -72,7 +72,7 @@ useMex = 1;
 tic;
 
 low0 = real(shock(low,para.iter,para.dt,para.h,'cmp',[para.lam,para.lam_tld,para.a])); 
-edgesl0 = edge(low0,'canny',0.1);
+edgesl0 = edge_2010(low0,'canny',0.1);
 
 [candidateH, candidateHTrans, index, diff] = ...
     genCandidate (edgesl, edgesl0, highdataU, lowdataTrans, highdataTrans, ... 
