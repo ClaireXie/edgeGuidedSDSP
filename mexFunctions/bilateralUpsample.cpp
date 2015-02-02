@@ -356,8 +356,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 		i = idx/m;
         j = idx%m;
 
-        if (i < scale*window_half || i >= n-scale*window_half-offset ||
-            j < scale*window_half || j >= m-scale*window_half-offset) 
+        if (i < scale*window_half || i >= min(n-scale*window_half-offset, n-scale*window_half) ||
+            j < scale*window_half || j >= min(m-scale*window_half-offset, m-scale*window_half))
             continue;
 
         float avg = 0;

@@ -131,6 +131,11 @@ end
 fprintf('[bilteral filtering] '); toc; tic;
 disp('---------------------------------');
 
+
+if (~exist('outputs','dir'))
+    mkdir('outputs');
+end
+    
 % save the result
 if indexn <= 4  
     if (show)
@@ -138,10 +143,6 @@ if indexn <= 4
         imwrite(uint8(highres),['outputs/', inputFile, '2_', num2str(scale), '.png']);
     end
 else
-    
-    if (~exist('outputs','dir'))
-        mkdir('outputs');
-    end
     save(['outputs/',inputFile, '_SRout.mat'],'highres');
     s = highres(11:end-11,11:end-11);
     tmp = (highres-min(s(:)))/(max(s(:))-min(s(:)));

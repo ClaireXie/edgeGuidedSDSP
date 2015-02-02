@@ -49,31 +49,32 @@ rmseV = calc_rmse(output(border+1:end-border,border+1:end-border),...
 ssimV = ssim(output(border+1:end-border,border+1:end-border),...
     gt(border+1:end-border,border+1:end-border),para.K,para.win,para.l);
 
-edgeError = sum(sum(abs(edgesGt(border+1:end-border,border+1:end-border)-...
-    edges(border+1:end-border,border+1:end-border))))...
-    /((size(edgesGt,1)-2*border)*(size(edgesGt,2)-2*border));
+percentErrorV = calc_err(output(border+1:end-border,border+1:end-border), ... 
+    gt(border+1:end-border,border+1:end-border), 1);
 
 if print2File
     fprintf(fid, [inputFile,': RMSE=    ', num2str(rmseV),'\n']);
     fprintf(fid, [inputFile,': SSIM=    ', num2str(ssimV),'\n']);
-    fprintf(fid, [inputFile,': edgeErr= ', num2str(edgeError),'\n']);
+    fprintf(fid, [inputFile,': percErr= ', num2str(percentErrorV),'\n']);
 else
     fprintf([inputFile,': RMSE=    ', num2str(rmseV),'\n']);
     fprintf([inputFile,': SSIM=    ', num2str(ssimV),'\n']);
-    fprintf([inputFile,': edgeErr= ', num2str(edgeError),'\n']);
+    fprintf([inputFile,': percErr= ', num2str(percentErrorV),'\n']);
 end
 
-% also compute error map
-errorMapDepth = abs(output(border+1:end-border,border+1:end-border) - ... 
-    gt(border+1:end-border,border+1:end-border));
+% compute error map
+% comment the following if you want to save the error image
 
-errorMapEdge = (edges(border+1:end-border,border+1:end-border) - ... 
-    edgesGt(border+1:end-border,border+1:end-border));
+%errorMapDepth = abs(output(border+1:end-border,border+1:end-border) - ... 
+%    gt(border+1:end-border,border+1:end-border));
 
-h1 = figure;imagesc(errorMapDepth);colorbar;title('ErrorMap-depth');truesize;
-h2 = figure;imagesc(errorMapEdge);colorbar;title('ErrorMap-edge');truesize;
+%errorMapEdge = (edges(border+1:end-border,border+1:end-border) - ... 
+%    edgesGt(border+1:end-border,border+1:end-border));
 
-print(h1,'-dpng',sprintf('outputs/errorMapDepth_%s.png', inputFile));
-print(h2,'-dpng',sprintf('outputs/errorMapEdge_%s.png', inputFile));
+%h1 = figure;imagesc(errorMapDepth);colorbar;title('ErrorMap-depth');truesize;
+%h2 = figure;imagesc(errorMapEdge);colorbar;title('ErrorMap-edge');truesize;
+
+%print(h1,'-dpng',sprintf('outputs/errorMapDepth_%s.png', inputFile));
+%print(h2,'-dpng',sprintf('outputs/errorMapEdge_%s.png', inputFile));
 
 fclose(fid);  

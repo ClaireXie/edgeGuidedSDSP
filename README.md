@@ -23,7 +23,7 @@ The code depends on UGM toolbox (http://www.cs.ubc.ca/~schmidtm/Software/UGM.htm
 
 4. If you want to do the training on your own, with the collected image data, use edgeScript.m
 
-Note: The code is tested under 64bit Linux platform with Matlab 2013b and 2014b. 
+Note: The code has been tested under 64bit Linux and Windows platform with Matlab 2013b and 2014b installed. 
 
 Depth Super-resolution Results
 =======================
