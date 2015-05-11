@@ -17,9 +17,6 @@ function [highres,edges] = mrfLearning(name, indexn, w1, w2, localSize, scale, t
 % 
 % (c)2014 Jun Xie
 
-addpath('mainCode/');
-addpath('funcs/');
-
 dictName = sprintf('dictionaries/patchData_%d_high', scale);
 load(dictName);
 addpath(genpath('utils/'));
@@ -69,6 +66,7 @@ para.theta = pi/1000;
 para.smooth = 0;
 
 useMex = 1;
+useANN = 1;
 tic;
 
 low0 = real(shock(low,para.iter,para.dt,para.h,'cmp',[para.lam,para.lam_tld,para.a])); 
@@ -76,7 +74,7 @@ edgesl0 = edge_2010(low0,'canny',0.1);
 
 [candidateH, candidateHTrans, index, diff] = ...
     genCandidate (edgesl, edgesl0, highdataU, lowdataTrans, highdataTrans, ... 
-    psize, localSize, w1);
+    psize, localSize, w1, useANN);
 fprintf('[generate candidates] '); toc; tic;
 disp('---------------------------------');
 

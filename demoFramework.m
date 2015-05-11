@@ -5,6 +5,8 @@
 clc; clear; close all;
 
 addpath('mainCode/');
+addpath('funcs/');
+addpath('funcs/ann/');
 
 % list of the input testing images
 names{1} = 'cones';
@@ -25,9 +27,11 @@ inputFile = names{testIndex};
 global window sigma_d;
 
 % multi-thread
+%{
 if matlabpool('size') == 0
     matlabpool open local 4
 end
+%}
 
 % parameters setting
 %----------------------------------%

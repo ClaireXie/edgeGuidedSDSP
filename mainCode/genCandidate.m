@@ -1,7 +1,7 @@
 
 function [candidateH, candidateHTrans, index, diff] = ...
            genCandidate (edgeMap, edfeMapShock, highData, lowdataTrans, ... 
-           highdataTrans, psize, localSize, w1)
+           highdataTrans, psize, localSize, w1, useANN)
        
 % Function for generating candidate patches for dataset
 %   Input: 
@@ -13,6 +13,8 @@ function [candidateH, candidateHTrans, index, diff] = ...
 %        psize: window size
 %        localSize: overlap size between patches
 %        w1: unary weight -- weights for the shock edge map
+%        useANN: a boolean var to indicate if the efficient KNN
+%        implementation is enabled
 %   Output:     
 %        candidateH: high-res candidate patches
 %        candidateHTrans: high-res candidate patches(distance transformed)
@@ -20,7 +22,6 @@ function [candidateH, candidateHTrans, index, diff] = ...
 %        diff: intensity difference between the candidate and the input
 % 
 % (c)2014 Jun Xie
-
 
 half = (psize+1)/2;
 numCandidates = 5;
@@ -73,7 +74,15 @@ end
 % search for candidates, do knn search
 fprintf('finding the knn...\n');
 sdata = [lowdataTrans w1*highData];
-[idx, diff] = knnsearch(sdata, query, 'K', numCandidates);
+
+%matlab implementation of knn
+if (~useANN)
+    [idx, diff] = knnsearch(sdata, query, 'K', numCandidates);
+else
+% currently implemented with a more efficient kd tree representation 
+% with ANN wrapper
+    [idx, diff] = knn_mex(sdata, query, numCandidates);
+end
 
 % contruct graph structure
 % older implementation, currently implemented in mex

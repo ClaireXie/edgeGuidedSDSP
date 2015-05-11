@@ -216,33 +216,38 @@ void pred2path(vector <int> P, int s, int t, vector<int> &path) {
 
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 
-    mwIndex *ir, *jc;
-    double *s;
-    ir = mxGetIr(prhs[0]);      /* Row indexing      */
-    jc = mxGetJc(prhs[0]);      /* Column count      */
-    s  = mxGetPr(prhs[0]);      /* Non-zero elements */ 
 
-    double *edge = (double *) mxGetData(prhs[1]);
-    int nzero = mxGetScalar(prhs[2]);
-    int n = mxGetScalar(prhs[3]);
-    int m = mxGetM(prhs[1]);
+  // if (nrhs < 4) {
+  //   mexErrMsgTxt("4 inputs required: data_train (N1*dim), data_query(N2*dim), k, (verbose)");
+  // }
 
-    cout<<"parameters:"<<endl;
-    cout<<"m = "<<m<<endl;
-    cout<<"n = "<<n<<endl;
-    cout<<"nzero = "<<nzero<<endl;
+  mwIndex *ir, *jc;
+  double *s;
+  ir = mxGetIr(prhs[0]);      /* Row indexing      */
+  jc = mxGetJc(prhs[0]);      /* Column count      */
+  s  = mxGetPr(prhs[0]);      /* Non-zero elements */ 
 
-    plhs[0] = mxCreateSparse(n*n, n*n, nzero, mxREAL);
+  double *edge = (double *) mxGetData(prhs[1]);
+  int nzero = mxGetScalar(prhs[2]);
+  int n = mxGetScalar(prhs[3]);
+  int m = mxGetM(prhs[1]);
 
-    computeGraph(n, edge, Point(221, 179), prhs[0], plhs[0], nzero, m);
-    int l = n*n;
-    vector <int> P, path;
-    vector <double> D;
-    dijkstra( l, (n*n-1)/2, D, P, plhs[0]);
+  cout<<"parameters:"<<endl;
+  cout<<"m = "<<m<<endl;
+  cout<<"n = "<<n<<endl;
+  cout<<"nzero = "<<nzero<<endl;
 
-    pred2path(P, (n*n-1)/2, 3, path);
+  plhs[0] = mxCreateSparse(n*n, n*n, nzero, mxREAL);
 
-    /*for (int i = 0; i<path.size(); i++) {
-        cout << path[i]<<endl;
-    }*/
+  computeGraph(n, edge, Point(221, 179), prhs[0], plhs[0], nzero, m);
+  int l = n*n;
+  vector <int> P, path;
+  vector <double> D;
+  dijkstra( l, (n*n-1)/2, D, P, plhs[0]);
+
+  pred2path(P, (n*n-1)/2, 3, path);
+
+  /*for (int i = 0; i<path.size(); i++) {
+      cout << path[i]<<endl;
+  }*/
 }

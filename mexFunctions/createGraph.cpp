@@ -16,16 +16,21 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 	// candidateHTrans (nonzeor*(psize*psize)*labels)
 	// patchSize
 	// m, n
-	// structureSzie
 	// labels
+    // structureSzie
 
-    if (nrhs != 7) {
-		mexErrMsgTxt("7 inputs required: \n index candidateHTrans patchSize structureSize labels \n");
+    if (nrhs < 7) {
+		mexErrMsgTxt("7 inputs required: \n index candidateHTrans patchSize m, n, labels, structureSzie \n");
 	}
 
 	if (nlhs != 3) {
 		mexErrMsgTxt("3 outputs required: \n structure edgePots edgeEnds \n");
 	}
+
+    bool verbose = false;
+    if (nrhs == 8) {
+        verbose = mxGetScalar(prhs[7]);
+    }
 
     // matlab index
     double *index = (double *) mxGetData(prhs[0]);
@@ -39,13 +44,14 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 
     int half = (patchSize-1)/2;
 
-    cout << "============================================"<<endl;
-    cout << "Parameters: "<<endl;
-    cout << "patchSize = " << patchSize << endl;
-    cout << "m = " << m << " n = " << n <<endl;
-    cout << "labels = " << labels <<endl;
-    cout << "sturcutreSize = " << structureSize << endl;
-
+    if (verbose) {
+        cout << "============================================"<<endl;
+        cout << "Parameters: "<<endl;
+        cout << "patchSize = " << patchSize << endl;
+        cout << "m = " << m << " n = " << n <<endl;
+        cout << "labels = " << labels <<endl;
+        cout << "sturcutreSize = " << structureSize << endl;
+    }
 
     mwIndex *ir,*jc;
     double *sr;

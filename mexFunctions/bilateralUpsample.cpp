@@ -298,12 +298,17 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 	// scale (int)
 	// offset
 
-	if (nrhs != 11) {
-		mexErrMsgTxt("11 inputs required: \n low_depth medium_depth(using bicubic interp) edges shortestPath_template window_size sigma_d scale offset \n");
+	if (nrhs < 11) {
+		mexErrMsgTxt("11 inputs required: \n low_depth medium_depth(using bicubic interp) edges shortestPath_template window_size sigma_d scale offset (verbose)\n");
 	}
 
 	if (nlhs != 1) {
 		mexErrMsgTxt("1 output required: \n highRes_depth \n");
+	}
+
+	bool verbose = false;
+	if (nrhs == 12) {
+		verbose = mxGetScalar(prhs[3]);
 	}
 
 	//load images (be careful about c++ index and matlab index)
@@ -336,14 +341,16 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 
 
 
-	cout << "============================================"<<endl;
-	cout << "Parameters: "<<endl;
-	cout << "window_size = "<<window_size<<endl;
-	cout << "sigma_d = "<<sigma_d<<endl;
-	cout << "(m , n) = ("<<m<<", "<<n<<")"<<endl;
-	cout << "scale = "<<scale<<endl;
-	cout << "offset = "<<offset<<endl;
-	cout << "nzero = "<<nzero<<endl;
+	if (verbose) {
+		cout << "============================================"<<endl;
+		cout << "Parameters: "<<endl;
+		cout << "window_size = "<<window_size<<endl;
+		cout << "sigma_d = "<<sigma_d<<endl;
+		cout << "(m , n) = ("<<m<<", "<<n<<")"<<endl;
+		cout << "scale = "<<scale<<endl;
+		cout << "offset = "<<offset<<endl;
+		cout << "nzero = "<<nzero<<endl;
+	}
 
 	int i, j;
 

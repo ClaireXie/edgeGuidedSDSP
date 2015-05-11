@@ -1,0 +1,4 @@
+cxxflags = 'CXXFLAGS=\$CXXFLAGS -msse3 -fPIC';
+mex('knn_mex.cpp', cxxflags, 'libANN.a' 'libANN.a');
+%mex CXXOPTIMFLAGS='-w -fPIC' knn_mex.cpp -L. -lANN;
+disp('done!');

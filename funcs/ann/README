@@ -1,0 +1,15 @@
+Matlab/C++ wrapper of ANN
+
+
+1. Run ANN in c++
+==================================
+COMPILE: g++ knn.cpp -I. -L. -lANN -o knn
+RUN: ./knn data.txt query.txt 882 5
+
+
+
+2. Run ANN in matlab 
+==================================
+COMPILE: make.m
+RUN(show as in demo.m): [idx, dist] = knn_mex(data, query, k);
+
