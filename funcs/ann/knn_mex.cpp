@@ -90,7 +90,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[]){
 
 	// dump the data to matlab
 	plhs[0] = mxCreateDoubleMatrix(nnIdx.size(), k, mxREAL);
-    plhs[1] = mxCreateDoubleMatrix(dists.size(), k, mxREAL);
+	plhs[1] = mxCreateDoubleMatrix(dists.size(), k, mxREAL);
     double* indexes = mxGetPr(plhs[0]);
     double* distances   = mxGetPr(plhs[1]);
 
@@ -99,5 +99,12 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[]){
     		indexes[ i+ nnIdx.size()*j] = nnIdx[i][j] + 1;
     		distances[ i+ dists.size()*j] = dists[i][j];
     	}
-    }  
+
+    	// free the memory
+    	delete [] nnIdx[i];
+    	delete [] dists[i];
+    }
+
+    delete kdTree;
+    annClose();
 }

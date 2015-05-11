@@ -75,7 +75,7 @@ int main (int argc, char **argv)
 
 	cout << "Duration = " << ( std::clock() - start ) / (double) CLOCKS_PER_SEC << " sec." << endl;
 
-	// print out index
+	//print out index
 	// for (int j = 0; j<num_query; j++) {
 	// 	cout << j+1 << " ";
 	// 	for (int i = 0; i < k; i++) {
@@ -83,6 +83,15 @@ int main (int argc, char **argv)
 	// 	}
 	// 	cout << endl;
 	// }
+
+	// free memory
+	for (int i = 0; i<num_query; i++) {
+		delete [] nnIdx[i];
+    	delete [] dists[i];
+	} 
+
+	 delete kdTree;
+    annClose();
 
 	return 1;
 }
