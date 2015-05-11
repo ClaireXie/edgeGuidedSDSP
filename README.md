@@ -16,13 +16,13 @@ Dependences
 
 
 2. ANN (https://www.cs.umd.edu/~mount/ANN/), *optional* for a more efficient k-nearest neighbor search implementation. 
-The source code of ANN is included in funs/ANN/. 
+The source code of ANN is included in funs/ANN/. We have provided with a Matlab wrapper for ANN library. 
 This feature is enabled by default. To disable it, simply set line68@mainCode/mrfLearning.m: 
 	useANN = 1;
 to
 	useANN = 0;
 
-Run make.m to compile the mex file. 
+Then run make.m to compile the mex file of the ANN wrapper. 
 
 
 How to Use the Code
