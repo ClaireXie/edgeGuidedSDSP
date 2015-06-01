@@ -90,6 +90,9 @@ int main (int argc, char **argv)
     	delete [] dists[i];
 	} 
 
+	annDeallocPts(dataPts);
+    annDeallocPts(queryPt);
+
 	 delete kdTree;
     annClose();
 
