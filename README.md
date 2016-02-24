@@ -2,13 +2,10 @@ EdgeGuided SDSP
 =======================
 Edge Guided Single Depth Image Super-resolution
 
-This code implements the approach for super resolution with a single depth image input in the following paper:
-
-http://public.genius-field.com/junx/publication/icip2014_edgeGuided.pdf
+This code implements the approach for super resolution with a single depth image input in this [paper](http://www.clairexie.org/resources/TIP16.pdf)
 
 If you intend to use the source code, please cite the paper as follows:
-J. Xie, R. Feris and M.T. Sun, "Edge Guided Single Depth Image Super Resolution," ICIP 2014
-
+Jun Xie, R. S. Feris and Ming-Ting Sun, "Edge-Guided Single Depth Image Super Resolution," in IEEE Transactions on Image Processing, vol. 25, no. 1, pp. 428-438, Jan. 2016.
 
 Dependences
 =======================
