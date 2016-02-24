@@ -5,6 +5,7 @@ Edge Guided Single Depth Image Super-resolution
 This code implements the approach for super resolution with a single depth image input in this [paper](http://www.clairexie.org/resources/TIP16.pdf)
 
 If you intend to use the source code, please cite the paper as follows:
+
 Jun Xie, R. S. Feris and Ming-Ting Sun, "Edge-Guided Single Depth Image Super Resolution," in IEEE Transactions on Image Processing, vol. 25, no. 1, pp. 428-438, Jan. 2016.
 
 Dependences
