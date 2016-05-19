@@ -1,6 +1,6 @@
 
-function [candidateH, candidateHTrans, index, diff] = ...
-           genCandidate (edgeMap, edfeMapShock, highData, lowdataTrans, ... 
+function [candidateH, candidateHTrans, index, diff1] = ...
+           genCandidate (edgeMap, edgeMapShock, highData, lowdataTrans, ... 
            highdataTrans, psize, localSize, w1, useANN)
        
 % Function for generating candidate patches for dataset
@@ -40,7 +40,7 @@ for i = half+1:size(edgeMap,1)-half
             % original patches
             patch = edgeMap(i-half+1:i+half-1, j-half+1:j+half-1);
             % shock patches
-            patch0 = edfeMapShock(i-half+1:i+half-1, j-half+1:j+half-1);
+            patch0 = edgeMapShock(i-half+1:i+half-1, j-half+1:j+half-1);
                         
             % perform distance transform
             patchTrans = bwdist(patch);
@@ -48,11 +48,10 @@ for i = half+1:size(edgeMap,1)-half
             % get the query data for knn
             query(num,:) = double([patchTrans(:); w1*patch0(:)]);
             
+                    
             ii = i; jj = j;
-
             index(num,:) = [ii,jj];
-            patchLow(num,:) = patch(:)';
-            patchHigh(num,:) = patch0(:)';
+
             
             % avoid repeating too many neighbor pixels
             edgeslTmp(i-localSize:i+localSize, j-localSize:j+localSize) = ...
@@ -60,11 +59,13 @@ for i = half+1:size(edgeMap,1)-half
             
             num = num+1;
             
-            % for visualization
+            % for visualization only
+            %{
             output(i-half+1:i+half-1, j-half+1) = 1;
             output(i-half+1:i+half-1, j+half-1) = 1;
             output(i-half+1, j-half+1:j+half-1) = 1;
             output(i+half-1, j-half+1:j+half-1) = 1;
+            %}
             
         end
     end
@@ -75,6 +76,9 @@ end
 fprintf('finding the knn...\n');
 sdata = [lowdataTrans w1*highData];
 
+
+% add patch match
+
 %matlab implementation of knn
 if (~useANN)
     [idx, diff] = knnsearch(sdata, query, 'K', numCandidates);
@@ -84,33 +88,41 @@ else
     [idx, diff] = knn_mex(sdata, query, numCandidates);
 end
 
-% contruct graph structure
-% older implementation, currently implemented in mex
-%{
-fprintf('contruct graph structure and collect candidate patches...\n');
-structure = zeros(size(index,1));
-structure = sparse(structure);
-for i = 1:size(index,1)
-    % determine whether two patches have overlaps
-    x0 = index(i,1);
-    y0 = index(i,2);
-    for j = i+1:size(index,1)
-        xx = index(j,1);
-        yy = index(j,2);
-        
-        if (abs(x0-xx) < 21 && abs(y0-yy) < 21)
-            structure(i,j) = 1;
-        end
-    end
-end
-toc; tic;
-%}
-
+diff1 = [];
 % collect candidate patches
-for i = 1:size(idx,1)
-    candidateH(i,:,:) = highData(idx(i,:), :);
-    candidateHTrans(i,:,:) = highdataTrans(idx(i,:), :);
+for j =0   %:4
+    for i = 1:size(idx,1)
+        candidateH(i,j*numCandidates+1:(j+1)*numCandidates,:) = ... 
+            shift_patch(highData(idx(i,:), :), j, psize);
+        candidateHTrans(i,j*numCandidates+1:(j+1)*numCandidates,:) = ... 
+            shift_patch(highdataTrans(idx(i,:), :), j, psize);
+    end
+    diff1 = [diff1 diff];
 end
 
 
+function output = shift_patch(input, dir, w)
 
+if (dir == 0)
+    output = input;
+    return;
+end
+
+input = reshape(input, [], w, w);
+output = zeros(size(input));
+
+% move up 
+if (dir == 1)
+   output(:, 1:w-1, :) =  input(:, 2:w, :);
+% move down
+elseif (dir == 2)
+   output(:, 2:w, :) =  input(:, 1:w-1, :);
+% move left
+elseif (dir == 3)
+   output(:, :, 1:w-1) = input(:, :, 2:w);
+elseif (dir == 4) 
+   output(:, :, 2:w) = input(:, :, 1:w-1);
+end
+
+output = reshape(output, [], w*w);
+   

@@ -1,5 +1,6 @@
 
-function [highres,edges] = mrfLearning(name, indexn, w1, w2, localSize, scale, threshold, show)
+function [highres,edges] = mrfLearning(name, indexn, w1, w2, ... 
+    localSize, scale, threshold, self, show)
 
 % MRF learning with smooth constraint
 %   Input: 
@@ -17,39 +18,41 @@ function [highres,edges] = mrfLearning(name, indexn, w1, w2, localSize, scale, t
 % 
 % (c)2014 Jun Xie
 
-dictName = sprintf('dictionaries/patchData_%d_high', scale);
-load(dictName);
 addpath(genpath('utils/'));
 addpath('mainCode/');
 addpath('funcs/');
 
-psize = sqrt(size(lowdata,2));
-psize_high = psize;
-half = (psize+1)/2;
-
 inputFile = name{indexn};
 
 % for middlebury data
-if indexn <= 4
+if indexn < 17
     original = imread(['inputs/', inputFile, '_clean.png']);
     %crop the original for downsampling
     sz = size(original);
     sz = sz - mod(sz, scale);
     original = original(1:sz(1), 1:sz(2));
-
     input = imresize(original,1/scale,'nearest');
     
 % for laser data
 else
-    load (['inputs/', inputFile]);
-    if indexn == 5
-        input = bilateralOMA(D);
-    else
-        input = D;
+    input = imread(['inputs/', inputFile, '_low.png']);
+    if indexn == 20
+        input = bilateralOMA(double(input));
     end
 end
-
 input = double(input);
+
+if (self)
+    patchSize = 11;
+    dictName = extractPatches(input, scale, patchSize, 10);
+else
+    dictName = sprintf('dictionaries/patchData_%d_high', scale);  %_3
+end
+load(dictName);
+
+psize = sqrt(size(lowdataU,2));
+psize_high = psize;
+half = (psize+1)/2;
 
 % nn interpolation
 low = imresize(input,scale,'nearest');
@@ -58,27 +61,29 @@ edgesl = edge_2010(low,'canny',threshold);
 % shock filter parameters
 para.dt = 0.1;
 para.h = 1;
-para.iter = 20;   % iter = 120 for scale = 8
+para.iter = 20;   
 para.lam = 0.00;
 para.lam_tld = 1;
 para.a = 0.4;
 para.theta = pi/1000;
 para.smooth = 0;
 
-useMex = 1;
 useANN = 1;
 tic;
 
 low0 = real(shock(low,para.iter,para.dt,para.h,'cmp',[para.lam,para.lam_tld,para.a])); 
 edgesl0 = edge_2010(low0,'canny',0.1);
 
-[candidateH, candidateHTrans, index, diff] = ...
+[candidateH, candidateHTrans, index, diff1] = ...
     genCandidate (edgesl, edgesl0, highdataU, lowdataTrans, highdataTrans, ... 
     psize, localSize, w1, useANN);
+
+
 fprintf('[generate candidates] '); toc; tic;
 disp('---------------------------------');
 
-[unary edgePots edgeEnds] = createGraphMex(candidateH, candidateHTrans, index, diff, edgesl);
+
+[unary, edgePots, edgeEnds] = createGraphMex(candidateH, candidateHTrans, index, diff1, edgesl);
 
 fprintf('[construct graph] '); toc; tic;
 disp('---------------------------------');
@@ -105,8 +110,10 @@ disp('---------------------------------');
 
 % averaging and thresholding
 output = output./count;
-output = (output>0.2);
 
+%keyboard;
+output = (output>0.2);
+output = bwareaopen(output, 4);
 
 if (show)
     figure;imshow(uint8(output*255));
@@ -117,14 +124,9 @@ edges = output;
 % jopint bilateral super resolution
 fprintf('super-resolution...\n');
 
-offset = -1;   % very important
-if (useMex)
-    % super -resolution (mex code, simplified)
-    highres = blup_lowPathMex(edges, input, scale, offset);
-else 
-    % super -resolution (original code, more accurate)
-    highres = blup_lowPath(scale, input, output);
-end
+% super -resolution (mex simplified)
+offset = -1;
+highres = blup_lowPathMex(edges, input, scale, offset);
 
 fprintf('[bilteral filtering] '); toc; tic;
 disp('---------------------------------');
@@ -135,7 +137,7 @@ if (~exist('outputs','dir'))
 end
     
 % save the result
-if indexn <= 4  
+if indexn <= 16
     if (show)
         figure;imshow(uint8(highres));
         imwrite(uint8(highres),['outputs/', inputFile, '2_', num2str(scale), '.png']);
@@ -150,12 +152,6 @@ else
     end
     imwrite(uint8(output*255),['outputs/', inputFile, '2_edge_', num2str(scale), '.png']);
 end
-
-
-
-
-
-
 
 
 

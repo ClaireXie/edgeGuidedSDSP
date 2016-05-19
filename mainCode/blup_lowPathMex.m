@@ -14,7 +14,7 @@ function highRes = blup_lowPathMex(edges, input, scale, offset)
 addpath('mexFunctions/');
 global window sigma_d;
 
-depthMedium = imresize(input, scale, 'bicubic');
+depthMedium = imresize(input, scale, 'nearest');
 
 window_half = floor(window/2);
 template = computeDistTemp(scale*2*window_half+1);

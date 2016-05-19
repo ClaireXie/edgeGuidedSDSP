@@ -1,6 +1,6 @@
 
 % Demo of the edge guided single depth image super resolution + evaluation
-% (c)2014 Jun Xie
+% (c)2016 Jun Xie
 
 clc; clear; close all;
 
@@ -26,13 +26,6 @@ inputFile = names{testIndex};
 %----------------%
 global window sigma_d;
 
-% multi-thread
-%{
-if matlabpool('size') == 0
-    matlabpool open local 4
-end
-%}
-
 % parameters setting
 %----------------------------------%
 w1 = 3;      % unary weights -- weights for the shock edge map
@@ -43,15 +36,13 @@ sigma_d = 0.5;
 scale = 4;
 threshold = 0.08;
 show = 1;
+self_similarity = 1;
 
 fprintf(['runnning image ',inputFile,'\n']);
 disp('=======================================');
 
-totalTime = tic;
 [highres,edges] = mrfLearning(names, testIndex, w1, w2, localSize, scale, ... 
-    threshold, show);
-fprintf('Total time = \n');
-toc(totalTime);
+    threshold, self_similarity, show);
 
 if (testIndex ~= 5)
     % run evaluation

@@ -140,6 +140,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 			for (int k2 = 0; k2 < labels; k2++) {
 
 				double sum = 0;
+                int count = 0;
 				for (int jy = min_y; jy <= max_y; jy++) {
 					for (int jx = min_x; jx <= max_x; jx++) {
 
@@ -150,12 +151,18 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 
 						diff *= diff;
 						sum += diff;
+
+                        count ++;
 					}
 				}
 
 				// matlab index
-				edgePots[i + (k2 + k1*labels)*nonzero] = sum; 
-				edgeEnds[i] = a[i]+1; 
+                if (count == 0)
+				    edgePots[i + (k2 + k1*labels)*nonzero] = 0;
+                else
+                    edgePots[i + (k2 + k1*labels)*nonzero] = sum/count; 
+				
+                edgeEnds[i] = a[i]+1; 
 				edgeEnds[i+nonzero] = b[i]+1;
     		}
     	}

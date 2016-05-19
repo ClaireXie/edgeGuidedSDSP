@@ -5,10 +5,6 @@
 
 clc;clear;close all;
 
-%if matlabpool('size') == 0
-%    matlabpool open local 4
-%end
-
 addpath('mainCode/');
 
 names{1}='cones';
@@ -25,7 +21,7 @@ window = 7;
 sigma_d = 0.5;
 w1 = 3;
 w2 = 1;
-localSize = 1;  %1
+localSize = 1;
 show = 1;
 scale = 4;
 threshold = [0.08, 0.1, 0.1, 0.1 0.05, 0.06, 0.06, 0.06];
@@ -41,6 +37,7 @@ para.print2File = 1;
 % run the code for each image
 for i = 1:numel(names)
     
+    % The scale fact is fixed (please refer to Middlebury Dataset)
     scaleFact = 1;
     if (i == 1 || i == 2)
         scaleFact = 4;

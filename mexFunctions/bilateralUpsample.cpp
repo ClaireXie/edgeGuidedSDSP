@@ -430,27 +430,6 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 	        			}
 	        		}
 
-	        		// if (path.size() != list[index].size()) { 
-	        			// 	cout << int(path.size()) - int(list[index].size())<<endl;
-	        			// }
-
-	        		/*else {
-
-	        			// using template
-	        			for (int k = 0; k<list[index].size(); k++) {
-	        				int xx = list[index][k].x + j - scale*window_half;
-	        				int yy = list[index][k].y + i - scale*window_half;
-
-	        				//cout << "B " << xx <<" "<<yy<<endl;
-
-	        				// edge should be in C++ index
-	        				if (edge[xx+ yy*m] != 0) {
-	        					crossEdge = true;
-	        					crossEdgeCount ++;;
-	        				}
-	        			}
-        			}*/
-
         			if (!crossEdge || (edge[j+ i*m] == 1 && crossEdgeCount == 1))
         			{
         				// perform bilateral filtering
@@ -461,8 +440,6 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
         				avg += value*g_d;
         				normalize += g_d;
         			}
-
-
         		}
         	}
         }

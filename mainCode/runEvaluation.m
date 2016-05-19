@@ -62,19 +62,4 @@ else
     fprintf([inputFile,': percErr= ', num2str(percentErrorV),'\n']);
 end
 
-% compute error map
-% comment the following if you want to save the error image
-
-%errorMapDepth = abs(output(border+1:end-border,border+1:end-border) - ... 
-%    gt(border+1:end-border,border+1:end-border));
-
-%errorMapEdge = (edges(border+1:end-border,border+1:end-border) - ... 
-%    edgesGt(border+1:end-border,border+1:end-border));
-
-%h1 = figure;imagesc(errorMapDepth);colorbar;title('ErrorMap-depth');truesize;
-%h2 = figure;imagesc(errorMapEdge);colorbar;title('ErrorMap-edge');truesize;
-
-%print(h1,'-dpng',sprintf('outputs/errorMapDepth_%s.png', inputFile));
-%print(h2,'-dpng',sprintf('outputs/errorMapEdge_%s.png', inputFile));
-
 fclose(fid);  

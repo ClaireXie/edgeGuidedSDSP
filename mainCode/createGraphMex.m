@@ -27,9 +27,18 @@ patchSize = sqrt(size(candidateH,3));
 [n, m] = size(edgeMap);
 labels = size(candidateH,2);
 
+% deleted
+unary = unary/(patchSize*patchSize);
+
 candidateHTrans = permute(candidateHTrans, [1,3,2]);
-[structure, edgePots, edgeEnds] = createGraph(index, candidateHTrans, ... 
-    patchSize, m, n, labels, size(index, 1));
+candidateH = permute(candidateH, [1,3,2]);
+
+% deleted
+[structure, edgePots, edgeEnds] = createGraph(index, candidateH, ... 
+     patchSize, m, n, labels, size(index, 1));  %candidateHTrans
+
+%[structure, edgePots, edgeEnds] = createGraph(index, candidateHTrans, ... 
+%    patchSize, m, n, labels, size(index, 1));
 
 % matrix transform from c++ conversion to matlab conversion
 [B,I] = sort(edgeEnds(:, 1));
