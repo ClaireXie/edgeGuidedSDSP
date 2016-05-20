@@ -5,23 +5,23 @@ function [candidateH, candidateHTrans, index, diff1] = ...
        
 % Function for generating candidate patches for dataset
 %   Input: 
-%        edgeMap: input low-res edge
-%        edfeMapShock: input low-res edge after shock filtering
-%        highData: high-res patches from dataset
-%        lowdataTrans: low-res patches (distance transformed) from dataset
+%        edgeMap:       input low-res edge
+%        edfeMapShock:  input low-res edge after shock filtering
+%        highData:      high-res patches from dataset
+%        lowdataTrans:  low-res patches (distance transformed) from dataset
 %        highdataTrans: high-res patches (distance transformed) from dataset
-%        psize: window size
-%        localSize: overlap size between patches
-%        w1: unary weight -- weights for the shock edge map
-%        useANN: a boolean var to indicate if the efficient KNN
-%        implementation is enabled
+%        psize:         window size
+%        localSize:     overlap size between patches
+%        w1:            unary weight -- weights for the shock edge map
+%        useANN:        a boolean var to indicate if the efficient KNN 
+%                       implementation is enabled
 %   Output:     
-%        candidateH: high-res candidate patches
-%        candidateHTrans: high-res candidate patches(distance transformed)
-%        index: lookup table for indexing the patch position
-%        diff: intensity difference between the candidate and the input
+%        candidateH:    high-res candidate patches
+%        candidateHTrans:  high-res candidate patches(distance transformed)
+%        index:         lookup table for indexing the patch position
+%        diff1:         intensity difference between the candidate and the input
 % 
-% (c)2014 Jun Xie
+% (c)2016 Jun Xie
 
 half = (psize+1)/2;
 numCandidates = 5;
@@ -88,17 +88,17 @@ else
     [idx, diff] = knn_mex(sdata, query, numCandidates);
 end
 
-diff1 = [];
+
 % collect candidate patches
-for j =0   %:4
-    for i = 1:size(idx,1)
-        candidateH(i,j*numCandidates+1:(j+1)*numCandidates,:) = ... 
-            shift_patch(highData(idx(i,:), :), j, psize);
-        candidateHTrans(i,j*numCandidates+1:(j+1)*numCandidates,:) = ... 
-            shift_patch(highdataTrans(idx(i,:), :), j, psize);
-    end
-    diff1 = [diff1 diff];
+diff1 = []; j = 0;
+for i = 1:size(idx,1)
+    candidateH(i,j*numCandidates+1:(j+1)*numCandidates,:) = ... 
+        shift_patch(highData(idx(i,:), :), j, psize);
+    candidateHTrans(i,j*numCandidates+1:(j+1)*numCandidates,:) = ... 
+        shift_patch(highdataTrans(idx(i,:), :), j, psize);
 end
+diff1 = [diff1 diff];
+
 
 
 function output = shift_patch(input, dir, w)

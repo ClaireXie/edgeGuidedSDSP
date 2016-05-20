@@ -13,7 +13,6 @@ function output_name = extractPatches(D, scaling, psize, num_rot)
 % (c)2016 Jun Xie
 
 
-disp('========================')
 fprintf('Collect high-res and low-res edge pairs for Self-similarity...\n');
  
 psize_half = (psize+1)/2;
@@ -114,14 +113,13 @@ lowdata(cIt:end, :) = [];
 highdataTrans(cIt:end, :) = [];
 lowdataTrans(cIt:end, :) = [];
 
-fprintf('\n');
-
 [C, ia, ic] = unique([highdata, lowdata],'rows');
 highdataU = highdata(ia,:);
 lowdataU = lowdata(ia,:);
 highdataTrans = highdataTrans(ia,:);
 lowdataTrans = lowdataTrans(ia,:);
 fprintf('saving the patch data...\n');
+disp('------------------------------------');
 
 % save to (temp) result
 output_name = sprintf('dictionaries/patchData_%d_high_temp', scaling);

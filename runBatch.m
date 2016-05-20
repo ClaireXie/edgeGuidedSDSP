@@ -7,6 +7,7 @@ clc;clear;close all;
 warning off;
 
 addpath('mainCode/');
+addpath('funcs/');
 
 names{1}='cones';
 names{2}='teddy';
@@ -37,7 +38,7 @@ para.scale = scale;
 print2File = 0;
 
 % ---------- Enable self-similarity --------------%
-self_similarity = 1;
+self_similarity = 0;
 % ------------------------------------------------%
 
 % ---------- Enable visualize results ------------%
@@ -60,13 +61,17 @@ for i = 1:numel(names)
     para.threshold = threshold(i);
     
     inputFile = names{i};
+    
+    disp('===============================');
     fprintf('runnning image %s X %d \n', names{i}, scale);
+    disp('===============================');
+    
     [highres{i}, edges{i}] = mrfLearning(names, i, w1, w2, localSize, ... 
         scale, threshold(i), self_similarity, show);
     
     border = 2*window;
-    if (i ~= 5)
-        runEvaluation(inputFile, scale, highres{i}, scaleFact, border, print2File, i);
+    if ~strcmp(names{i}, '11_250')
+        runEvaluation(inputFile, scale, highres{i}, scaleFact, border, print2File);
     end
     
     highRes = highres{i};

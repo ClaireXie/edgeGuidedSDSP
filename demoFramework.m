@@ -3,10 +3,10 @@
 % (c)2016 Jun Xie
 
 clc; clear; close all;
+warning off;
 
 addpath('mainCode/');
 addpath('funcs/');
-addpath('funcs/ann/');
 
 % list of the input testing images
 names{1} = 'cones';
@@ -39,8 +39,10 @@ show = 1;
 
 % enable self-similarity
 self_similarity = 0;
+%----------------------------------%
 
-fprintf(['runnning image ',inputFile,'\n']);
+disp('=======================================');
+fprintf('runnning image %s X %d \n', inputFile, scaleFact);
 disp('=======================================');
 
 [highres,edges] = mrfLearning(names, testIndex, w1, w2, localSize, scale, ... 
@@ -49,5 +51,5 @@ disp('=======================================');
 if (testIndex ~= 5)
     % run evaluation
     border = 2*window;
-    runEvaluation(inputFile, scale, highres, scaleFact, border, 0, testIndex);
+    runEvaluation(inputFile, scale, highres, scaleFact, border, 0);
 end

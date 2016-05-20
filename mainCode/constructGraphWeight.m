@@ -11,5 +11,3 @@ for i = 1:length(row)
     
     C(row(i),col(i)) = C0(row(i),col(i))*max(edges(indi1,indj1),edges(indi2,indj2));
 end
-
-%C = C+transpose(C);

@@ -16,10 +16,9 @@ function [highres,edges] = mrfLearning(name, indexn, w1, w2, ...
 %        highres: upsampled result
 %        edges: constructed high-res edges
 % 
-% (c)2014 Jun Xie
+% (c)2016 Jun Xie
 
 addpath(genpath('utils/'));
-addpath('funcs/');
 addpath('funcs/ann');
 addpath('mexFunctions/');
 
@@ -27,7 +26,6 @@ inputFile = name{indexn};
 
 % for middlebury data
 image_file = ['inputs/', inputFile, '_clean.png'];
-
 if (exist(image_file,'file'))
     original = imread(image_file);
     %crop the original for downsampling
@@ -145,7 +143,6 @@ end
 if img_data
     if (show)
         figure;imshow(uint8(highres));
-        imwrite(uint8(highres),['outputs/', inputFile, '2_', num2str(scale), '.png']);
     end
 else
     save(['outputs/',inputFile, '_SRout.mat'],'highres');
@@ -153,10 +150,12 @@ else
     tmp = (highres-min(s(:)))/(max(s(:))-min(s(:)));
     if (show)
         figure;imshow(uint8(tmp*255));
-        imwrite(uint8(tmp*255),['outputs/',inputFile, '_SR.png']);
     end
-    imwrite(uint8(output*255),['outputs/', inputFile, '2_edge_', num2str(scale), '.png']);
 end
+
+% write results
+imwrite(uint8(highres),['outputs/', inputFile, '_', num2str(scale), '.png']);
+imwrite(uint8(output*255),['outputs/', inputFile, '_edge_', num2str(scale), '.png']);
 
 
 

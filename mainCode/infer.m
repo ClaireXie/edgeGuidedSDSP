@@ -32,8 +32,8 @@ edgeStruct.useMex = useMex;
 edgeStruct.maxIter = maxIter;
 
 edgePots = permute(edgePots,[2, 3, 1]);
-edgePots = exp(-1*edgePots/1000); % 1000
-nodePots = exp(-1*unary/1000);    % 1000
+edgePots = exp(-1*edgePots/1000);
+nodePots = exp(-1*unary/1000);   
 
 fprintf('[Inference] Decoding using L-BP...\n');
 

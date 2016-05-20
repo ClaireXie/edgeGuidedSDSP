@@ -18,13 +18,11 @@ Dependences
 
 2. ANN (https://www.cs.umd.edu/~mount/ANN/), *optional* for a more efficient k-nearest neighbor search implementation. 
 The source code of ANN is included in funs/ANN/. We have provided with a Matlab wrapper for ANN library. 
-This feature is enabled by default. To disable it, simply set the flag in mainCode/mrfLearning.m from
+This feature is enabled by default. To disable it, simply set the flag in **mainCode/mrfLearning.m** from
 	
 	```
 	useANN = 1; => useANN = 0;
 	```
-
-	Also run make.m to compile the mex file of the ANN wrapper. (Pre-built mex for Windows and Linux are included)
 
 3. Download the trained dictionary:
 
@@ -39,13 +37,12 @@ How to Use the Code
 =======================
 1. Run compileFiles.m to compile all the necessary mex files. (Pre-built mex for Windows and Linux are included)
 
-2. demoFramework.m is a simple demo script. runBatch.m is the batch script to run a couple of images.
-
-3. Then simply run demoFramework.m. Need to use the downnloaed dictionary file in dictionaries/. We use the training images from http://visual.cs.ucl.ac.uk/pubs/depthSuperRes/. After getting the images, please the data in training_data/
+2. *demoFramework.m* is a simple demo script. *runBatch.m* is the batch script to run a couple of images.
 
 4. Some example input depth images are included in inputs/
 
-5. If you intend to do the training on your own, with the collected image data, use trainingScript.m
+5. If you intend to do the training on your own, with the collected image data, use trainingScript.m. 
+   We use the training images from http://visual.cs.ucl.ac.uk/pubs/depthSuperRes/. After getting the images, please modify the data directory in trainingScript.m.
 
 6. You can switch to the self-similarity mode (without the training data), change from 
 
@@ -53,7 +50,7 @@ How to Use the Code
 	self_similarity = 1; => self_similarity = 0;
 	```
 
-	in runBatch.m/demoFramework.m
+	in **runBatch.m**/**demoFramework.m**
 
 Note: The code has been tested under 64bit Linux and Windows platform with Matlab 2014b/2015a installed. 
 
