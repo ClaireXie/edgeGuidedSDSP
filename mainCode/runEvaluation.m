@@ -1,6 +1,6 @@
 
-function runEvaluation(inputFile, scale, highres, edges, scaleFact, border, ... 
-    threshold, print2File, indexn)
+function runEvaluation(inputFile, scale, highres, scaleFact, border, ... 
+    print2File, indexn)
 % Evaluation Fuction
 %   Input: 
 %        inputFile: input file name
@@ -16,15 +16,15 @@ function runEvaluation(inputFile, scale, highres, edges, scaleFact, border, ...
 %        print2File: indicate whether to print the resultto file
 %        indexn: index of the file in the namelist (for indexing the GT)
 % 
-% (c)2014 Jun Xie
+% (c)2016 Jun Xie
 
 fid = fopen(sprintf('outputs/%s_result.txt', inputFile), 'w');
-offset=0;
 para.K=[0.01 0.02];
 para.win=fspecial('gaussian', 11, 1.5);
 
-if (indexn <= 4)
-    gtFile=['inputs/', inputFile, '_clean.png'];
+image_file = ['inputs/', inputFile, '_clean.png'];
+if exist(image_file,'file')
+    gtFile=image_file;
     gt=imread(gtFile);
 else
     gtFile = ['inputs/gt_laser/', inputFile(1:end-5)];
@@ -36,14 +36,12 @@ sz = size(gt);
 sz = sz - mod(sz, scale);
 gt = gt(1:sz(1), 1:sz(2));
 
-edgesGt = edge(gt,'canny',threshold);   %0.1
 gt = double(gt)/scaleFact;
 output = highres/scaleFact;
-output(1+offset:end,1+offset:end) = output(1:end-offset, 1:end-offset);
 
 para.l = max(max(gt))-min(min(gt));
 
-rmseV = calc_rmse(output(border+1:end-border,border+1:end-border),...
+rmseV = calc_rmse_roi(output(border+1:end-border,border+1:end-border),...
     gt(border+1:end-border,border+1:end-border));
 
 ssimV = ssim(output(border+1:end-border,border+1:end-border),...

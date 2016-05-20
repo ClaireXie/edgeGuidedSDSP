@@ -19,26 +19,31 @@ function [highres,edges] = mrfLearning(name, indexn, w1, w2, ...
 % (c)2014 Jun Xie
 
 addpath(genpath('utils/'));
-addpath('mainCode/');
 addpath('funcs/');
+addpath('funcs/ann');
+addpath('mexFunctions/');
 
 inputFile = name{indexn};
 
 % for middlebury data
-if indexn < 17
-    original = imread(['inputs/', inputFile, '_clean.png']);
+image_file = ['inputs/', inputFile, '_clean.png'];
+
+if (exist(image_file,'file'))
+    original = imread(image_file);
     %crop the original for downsampling
     sz = size(original);
     sz = sz - mod(sz, scale);
     original = original(1:sz(1), 1:sz(2));
-    input = imresize(original,1/scale,'nearest');
-    
+    input = imresize(original,1/scale,'nearest');  
+    img_data = 1;
 % for laser data
 else
-    input = imread(['inputs/', inputFile, '_low.png']);
-    if indexn == 20
+    load(['inputs/', inputFile, '.mat'], 'D');
+    input = D;
+    if strcmp('11_250', inputFile)
         input = bilateralOMA(double(input));
     end
+    img_data = 0;
 end
 input = double(input);
 
@@ -137,7 +142,7 @@ if (~exist('outputs','dir'))
 end
     
 % save the result
-if indexn <= 16
+if img_data
     if (show)
         figure;imshow(uint8(highres));
         imwrite(uint8(highres),['outputs/', inputFile, '2_', num2str(scale), '.png']);

@@ -16,8 +16,6 @@ function [ unary, edgePots, edgeEnds] = createGraphMex(candidateH, ...
 % (c)2014 Jun Xie
 
 
-addpath('mexFunctions/');
-
 fprintf('construct the edge weights...\n');
 
 % define the unary term

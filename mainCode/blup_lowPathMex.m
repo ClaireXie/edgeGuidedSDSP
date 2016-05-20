@@ -11,7 +11,6 @@ function highRes = blup_lowPathMex(edges, input, scale, offset)
 % 
 % (c)2014 Jun Xie
 
-addpath('mexFunctions/');
 global window sigma_d;
 
 depthMedium = imresize(input, scale, 'nearest');

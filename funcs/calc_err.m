@@ -1,3 +1,4 @@
 function errPer=calc_err(input,gt, th)
-tmp=input-gt;
-errPer=100*sum(sum((abs(tmp)>th)))/(size(tmp,1)*size(tmp,2));
+msk = (gt>0);
+tmp = (input-gt).*msk;
+errPer=100*sum(sum((abs(tmp)>th)))/(sum(msk(:)));

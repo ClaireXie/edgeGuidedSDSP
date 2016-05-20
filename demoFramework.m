@@ -36,7 +36,9 @@ sigma_d = 0.5;
 scale = 4;
 threshold = 0.08;
 show = 1;
-self_similarity = 1;
+
+% enable self-similarity
+self_similarity = 0;
 
 fprintf(['runnning image ',inputFile,'\n']);
 disp('=======================================');
@@ -47,6 +49,5 @@ disp('=======================================');
 if (testIndex ~= 5)
     % run evaluation
     border = 2*window;
-    runEvaluation(inputFile, scale, highres, edges, scaleFact, border, threshold, ... 
-        0, testIndex);
+    runEvaluation(inputFile, scale, highres, scaleFact, border, 0, testIndex);
 end
