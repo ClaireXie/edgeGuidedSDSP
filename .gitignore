@@ -2,3 +2,4 @@ middlebury/
 *_temp.mat
 *~
 dictionaries/*.mat
+outputs/

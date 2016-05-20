@@ -6,7 +6,10 @@ This code implements the approach for super resolution with a single depth image
 
 If you intend to use the source code, please cite the paper as follows:
 
-Jun Xie, R. S. Feris and Ming-Ting Sun, "Edge-Guided Single Depth Image Super Resolution," in IEEE Transactions on Image Processing, vol. 25, no. 1, pp. 428-438, Jan. 2016.
+```
+Jun Xie, R. S. Feris and Ming-Ting Sun, "Edge-Guided Single Depth Image Super Resolution," 
+in IEEE Transactions on Image Processing, vol. 25, no. 1, pp. 428-438, Jan. 2016.
+```
 
 Dependences
 =======================
@@ -18,44 +21,48 @@ The source code of ANN is included in funs/ANN/. We have provided with a Matlab 
 This feature is enabled by default. To disable it, simply set the flag in mainCode/mrfLearning.m from
 	
 	```
-	useANN = 1; to useANN = 0;
+	useANN = 1; => useANN = 0;
 	```
 
-Also run make.m to compile the mex file of the ANN wrapper. (Pre-built mex for Windows and Linux are included)
+	Also run make.m to compile the mex file of the ANN wrapper. (Pre-built mex for Windows and Linux are included)
 
-3. Download the trained dictionary from
+3. Download the trained dictionary:
 
-	[Dictionary with upscaling factor = 3](http://www.clairexie.org/data/dictionaries/patchData_3_high.mat) 
+	(If you only intend to run the self-similarity part, just ignore this step.)
 
-	[Dictionary with upscaling factor = 4](http://www.clairexie.org/data/dictionaries/patchData_4_high.mat)
+	[Dictionary with upscaling factor = 3](http://www.clairexie.org/data/dictionaries/patchData_3_high.mat) [~167MB]
+
+	[Dictionary with upscaling factor = 4](http://www.clairexie.org/data/dictionaries/patchData_4_high.mat) [~75MB]
 
 
 How to Use the Code
 =======================
 1. Run compileFiles.m to compile all the necessary mex files. (Pre-built mex for Windows and Linux are included)
 
-2. Then simply run demoFramework.m. An examplar learned dictionary file is included in dictionaries/. We use the training images from http://visual.cs.ucl.ac.uk/pubs/depthSuperRes/. 
+2. demoFramework.m is a simple demo script. runBatch.m is the batch script to run a couple of images.
 
-3. Some example input depth images are included in inputs/
+3. Then simply run demoFramework.m. Need to use the downnloaed dictionary file in dictionaries/. We use the training images from http://visual.cs.ucl.ac.uk/pubs/depthSuperRes/. After getting the images, please the data in training_data/
 
-4. If you want to do the training on your own, with the collected image data, use edgeScript.m
+4. Some example input depth images are included in inputs/
 
-	Note: The code has been tested under 64bit Linux and Windows platform with Matlab 2013b and 2014b installed. 
+5. If you intend to do the training on your own, with the collected image data, use trainingScript.m
 
-5. You can switch to the self-similarity mode (without the training data), change from 
+6. You can switch to the self-similarity mode (without the training data), change from 
 
 	```
-	self_similarity = 1; to self_similarity = 0;
+	self_similarity = 1; => self_similarity = 0;
 	```
 
 	in runBatch.m/demoFramework.m
+
+Note: The code has been tested under 64bit Linux and Windows platform with Matlab 2014b/2015a installed. 
 
 
 Depth Super-resolution Results
 =======================
 Please note that the quantitative evaluation result in this version is slightly lower than that was reported in the paper since we utilize some code optimization for efficiency concerns in this version. 
 
-Please feel free to contact junx@uw.edu for any questions or bug reports.
+Please feel free to contact xjsjtu88@gmail.com for any questions or bug reports.
 
 Change Logs
 =======================

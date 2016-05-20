@@ -2,7 +2,7 @@
 #include "mex.h"
 #include <cstdio>
 #include <cmath>
-
+#include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <vector>

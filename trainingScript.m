@@ -11,7 +11,7 @@ fprintf('collect high-res and low-res edge pairs...\n');
 scaling = 4;
 psize = 21; 
 psize_half = (psize+1)/2;
-fnames = dir('800/*.mat');
+fnames = dir('training_data/*.mat');
 
 preAlloc = zeros(200000, psize*psize);
 allocationTime = 0;
