@@ -46,6 +46,7 @@ end
 input = double(input);
 
 if (self)
+    fprintf('Self-similarity is enabled.\n');
     patchSize = 11;
     dictName = extractPatches(input, scale, patchSize, 10);
 else
