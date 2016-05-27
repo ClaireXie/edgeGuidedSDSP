@@ -2,7 +2,7 @@ EdgeGuided SDSP
 =======================
 Edge Guided Single Depth Image Super-resolution
 
-This code implements the approach for super resolution with a single depth image input in this [paper](http://www.clairexie.org/resources/TIP16.pdf)
+This code implements the approach for super resolution with a single depth image input in [this paper](http://www.clairexie.org/resources/TIP16.pdf). For more details, please refer to the [project page](http://www.clairexie.org/depth_superresolution/index.html).
 
 If you intend to use the source code, please cite the paper as follows:
 
