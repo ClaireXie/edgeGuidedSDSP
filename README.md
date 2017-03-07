@@ -47,7 +47,7 @@ How to Use the Code
 6. You can switch to the self-similarity mode (without the training data), change from 
 
 	```
-	self_similarity = 1; => self_similarity = 0;
+	self_similarity = 0; => self_similarity = 1;
 	```
 
 	in **runBatch.m**/**demoFramework.m**
